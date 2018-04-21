@@ -1,6 +1,7 @@
 import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Arrays;
 
 public class RodCutting {
 
@@ -55,6 +56,38 @@ public class RodCutting {
         return result;
     }
 
+    public static int maxRodValueBottomUp(int length, int[] prices) {
+
+        if (length > prices.length)
+            throw new IllegalArgumentException("bottom up: not enough prices");
+
+        int[] maxPrices = new int[length];
+
+        // If length is 1, the maximum prices is predetermined.
+        maxPrices[0] = prices[0];
+
+        for (int l = 2; l <= length; l++) {
+
+            int maxPrice = 0;
+
+            for (int i = 1; i < l; i++) {
+
+                int curPrice = prices[i - 1] + maxPrices[l - i - 1];
+                if (curPrice > maxPrice)
+                    maxPrice = curPrice;
+            }
+
+            if (prices[l-1] > maxPrice)
+                maxPrice = prices[l-1];  // best is only one segment with current length
+
+            maxPrices[l - 1] = maxPrice;
+        }
+
+        System.out.println("Max prices at end: " + Arrays.toString(maxPrices));
+
+        return maxPrices[length - 1];
+    }
+
     public static void main(String[] args) {
 
         /* Example from:
@@ -67,6 +100,8 @@ public class RodCutting {
 
         System.out.println("Best cutting: " + bestCut);
         System.out.println("Value: " + maxValue);
+
+        System.out.println("Bottom-up value: " + maxRodValueBottomUp(8, prices));
     }
 
 }
