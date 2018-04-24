@@ -5,7 +5,7 @@ public class BitSet {
 
     public BitSet(int size) {
         this.size = size;
-        vector = new int[size];
+        vector = new int[(size >> 5) + 1];
     }
 
     public void set(int i) {
