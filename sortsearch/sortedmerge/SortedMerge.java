@@ -1,5 +1,10 @@
 import java.util.Arrays;
 
+/**
+ * Merges two sorted arrays a and b, with the assumption that array a has still
+ * enough space at its end to contain the array b. The parameter na, therefore,
+ * denotes the number of actually used elements of a.
+ */
 public class SortedMerge {
 
     public static void sortedMerge(int[] a, int na, int[] b) {
