@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class StreamRanker {
 
     private Node bst = null;
@@ -5,88 +7,57 @@ public class StreamRanker {
     private class Node {
         private Node left;
         private Node right;
-        private Node parent;
         private int value;
-        private int leftCount;
-        private int rightCount;
+        private int leqCount;
 
-        public Node(Node parent, int value) {
+        public Node(int value) {
             this.left = null;
             this.right = null;
-            this.parent = parent;
             this.value = value;
-            this.leftCount = 1; // tracks smaller or equal
-            this.rightCount = 0;
+            this.leqCount = 1; // tracks smaller or equal
         }
         
         public void insert(int x) {
             if (x == value)
-                leftCount++;
-            else if (x <= value) {
-                leftCount++;
+                leqCount++;
+            else if (x < value) {
+                leqCount++;
                 if (left == null)
-                    left = new Node(this, x);
+                    left = new Node(x);
                 else
                     left.insert(x);
             }
-            else {
-                rightCount++;
+            else { // x > value
                 if (right == null)
-                    right = new Node(this, x);
+                    right = new Node(x);
                 else
                     right.insert(x);
             }
         }
 
-        public int rank() {
-
-            // Go up until you enter a node through its right descendant
-            // branch (or you arrive at the root).
-            int result = leftCount;
-            Node n = this;
-
-            // Keep moving n up as long as we can go up a left branch into a
-            // parent.
-            while (n.parent != null && n.parent.left == n)
-                n = n.parent;
-
-            // Now n is either the root or it has a parent accessible via the
-            // right branch.
-            while (n.parent != null && n.parent.right == n) {
-                n = n.parent;
-                result += n.leftCount;
-            }
-
-            return result;
-        }
-
-        /**
-         * Returns the node with the largest value that is smaller or equal to
-         * x, or null if no such node exists.
+        /** 
+         * Returns the number of nodes with value less or equal to x in the
+         * subtree whose root is this node.
          */
-        public Node find(int x) {
-
+        public int rank(int x) {
             if (x == value)
-                return this;
+                return leqCount;
             else if (x < value)
                 if (left == null)
-                    return null; // No value smaller or equal x exists
+                    return 0; // no <= node in the tree
                 else
-                    return left.find(x);
+                    return left.rank(x);
             else // x > value
                 if (right == null)
-                    return this; // Nothing more to the right, this is the largest
-                else if (right.value > x)
-                    return this; // Anything on right side is larger
+                    return leqCount;
                 else
-                    return right.find(x);
+                    return leqCount + right.rank(x);
         }
-
     }
 
     public void track(int x) {
         if (bst == null)
-            bst = new Node(null, x);
+            bst = new Node(x);
         else
             bst.insert(x);
     }
@@ -94,13 +65,8 @@ public class StreamRanker {
     public int rank(int x) {
         if (bst == null)
             return 0;
-        else {
-            Node n = bst.find(x);
-            if (n == null)
-                return 0;
-            else
-                return n.rank();
-        }
+        else
+            return bst.rank(x);
     }
 
     
@@ -112,6 +78,7 @@ public class StreamRanker {
             sr.track(sequence[i]);
 
         int[] numbers = {1, 3, 4, 5, 7, 9, 10, 13, 14};
+        System.out.println("Sequence checked: " + Arrays.toString(sequence));
         for (int i: numbers)
             System.out.println("rank(" + i + ") = " + sr.rank(i));
     }
