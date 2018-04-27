@@ -10,7 +10,7 @@ public class Node {
     @Override
     public String toString() {
         if (this.next != null)
-            return "" + this.data + ", " + this.next.toString();
+            return "" + this.data + this.next.toString();
         else
             return "" + this.data;
     }
