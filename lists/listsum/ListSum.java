@@ -3,6 +3,24 @@ public class ListSum {
     public static Node sumLists(Node n1, Node n2) {
         return sumLists(n1, n2, 0);
     }
+    
+    public static Node sumListsReverse(Node n1, Node n2) {
+        return reverse(sumLists(reverse(n1), reverse(n2)));
+    }
+
+    private static Node reverse(Node n) {
+        if (n == null)
+            return null;
+        else
+            return reverse(n, null);
+    }
+
+    private static Node reverse(Node n, Node reversed) {
+        if (n == null)
+            return reversed;
+        else
+            return reverse(n.next, new Node(n.data, reversed));
+    }
 
     private static Node sumLists(Node n1, Node n2, int carry) {
 
@@ -22,7 +40,6 @@ public class ListSum {
                 n2 = n2.next;
             }
 
-            System.out.println("Sum = " + sum);
             final int digitSum;
             final int newCarry;
             if (sum >= 10) {
@@ -32,7 +49,6 @@ public class ListSum {
                 digitSum = sum;
                 newCarry = 0;
             }
-            System.out.println("digitSum = " + digitSum + ", newCarry = " + newCarry);
 
             final Node sumRest = sumLists(n1, n2, newCarry);
             return new Node(digitSum, sumRest);
@@ -62,5 +78,6 @@ public class ListSum {
         System.out.println("n1  = " + n1);
         System.out.println("n2  = " + n2);
         System.out.println("sum = " + sum);
+        System.out.println("reverse sum = " + sumListsReverse(n1, n2));
     }
 }
