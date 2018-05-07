@@ -63,11 +63,21 @@ public class RedBlackTree {
 
         private Node rebalanceLeft() {
             // TODO: complete
+            /*
+             * This function is called if a new node has been recursively
+             * inserted into the left child. In this scenario, the present node
+             * plays the role of grandfather (G). The returned value is passed
+             * recursively to the parent, which will set it as new child - this
+             * is to enable rotations.
+             */
             throw new Error("not implemented");
         }
 
         private Node rebalanceRight() {
             // TODO: complete
+            /* This function is analogous to rebalanceRight, just that
+             * everything is mirrored.
+             */
             throw new Error("not implemented");
         }
     }
