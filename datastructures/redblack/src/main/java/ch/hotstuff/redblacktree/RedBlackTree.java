@@ -1,3 +1,5 @@
+package ch.hotstuff.redblacktree;
+
 public class RedBlackTree {
 
     private enum Color { RED, BLACK }
@@ -97,7 +99,7 @@ public class RedBlackTree {
             else if (left.right != null && left.right.color == Color.BLACK)
                 /* N is right child */
                 return leftRightRotation();
-            
+
             /* No need for an else clause - we have exhausted all possibilities.
              * Let's put a safety check for good measure.
              */
@@ -238,7 +240,7 @@ public class RedBlackTree {
             return N;
         }
 
-        
+
         /**
          * Verifies red integrity, i.e., no red node has any red children.
          */
