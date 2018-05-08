@@ -238,6 +238,43 @@ public class RedBlackTree {
             return N;
         }
 
+        
+        /**
+         * Verifies red integrity, i.e., no red node has any red children.
+         */
+        public void testRedIntegrity() {
+            if (color == Color.RED &&
+                    (left != null && left.color == Color.RED) ||
+                    (right != null && right.color == Color.RED))
+                throw new RuntimeException("Red violation detected");
+
+            if (left != null)
+                left.testRedIntegrity();
+            if (right != null)
+                right.testRedIntegrity();
+        }
+
+        /**
+         * Verifies black integrity, i.e., same number of black nodes on every
+         * path to a leaf.
+         * @return The number of black nodes of all paths from the current node
+         * to a leaf. If there are two paths with different number of black
+         * nodes, an exception is thrown.
+         */
+        public int testBlackIntegrity() {
+            int nBlackLeft = (left == null) ? 0 : left.testBlackIntegrity();
+            int nBlackRight = (right == null) ? 0 : right.testBlackIntegrity();
+
+            if (nBlackLeft != nBlackRight)
+                throw new RuntimeException("Black violation detected: " +
+                        "Left: " + nBlackLeft + ", right: " + nBlackRight);
+            else {
+                if (color == Color.BLACK)
+                    return nBlackLeft + 1;
+                else
+                    return nBlackLeft;
+            }
+        }
     }
 
     Node root = null;
@@ -251,10 +288,21 @@ public class RedBlackTree {
 
     public void insert(int x) {
         if (root == null)
-            root = new Node(x, Color.RED, null, null);
+            root = new Node(x, Color.BLACK, null, null);
         else {
             root = root.insert(x);
             root.color = Color.BLACK;
+        }
+    }
+
+    public void testIntegrity() {
+        if (root != null) {
+            if (root.color != Color.BLACK)
+                throw new RuntimeException("Root not black");
+            else {
+                root.testRedIntegrity();
+                root.testBlackIntegrity();
+            }
         }
     }
 }
