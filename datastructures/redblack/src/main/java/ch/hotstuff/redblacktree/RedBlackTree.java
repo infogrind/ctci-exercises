@@ -39,11 +39,11 @@ public class RedBlackTree {
         }
 
         public Node insert(int x) {
-            if (value == x)
+            if (x == value)
                 return this; // nothing to insert
-            else if (value < x)
+            else if (x < value)
                 if (left == null) {
-                    left = new Node(value, Color.RED, null, null);
+                    left = new Node(x, Color.RED, null, null);
                     return this;
                 }
                 else {
@@ -51,9 +51,9 @@ public class RedBlackTree {
                     left = left.insert(x);
                     return rebalanceLeft();
                 }
-            else { // value > x
+            else { // x > value
                 if (right == null) {
-                    right = new Node(value, Color.RED, null, null);
+                    right = new Node(x, Color.RED, null, null);
                     return this;
                 }
                 else {
@@ -123,6 +123,10 @@ public class RedBlackTree {
 
             P.right = G;
             G.left = a;
+
+            P.color = Color.BLACK;
+            G.color = Color.RED;
+
             return P;
         }
 
@@ -145,6 +149,10 @@ public class RedBlackTree {
             N.right = G;
             P.right = x;
             G.left = y;
+
+            G.color = Color.RED;
+            N.color = Color.BLACK;
+
             return N;
         }
 
@@ -215,6 +223,10 @@ public class RedBlackTree {
 
             P.left = G;
             G.right = a;
+
+            P.color = Color.BLACK;
+            G.color = Color.RED;
+
             return P;
         }
 
@@ -237,6 +249,10 @@ public class RedBlackTree {
             N.right = P;
             G.right = x;
             P.left = y;
+
+            N.color = Color.BLACK;
+            G.color = Color.RED;
+
             return N;
         }
 
@@ -246,8 +262,8 @@ public class RedBlackTree {
          */
         public void testRedIntegrity() {
             if (color == Color.RED &&
-                    (left != null && left.color == Color.RED) ||
-                    (right != null && right.color == Color.RED))
+                    (left != null && left.color == Color.RED ||
+                    right != null && right.color == Color.RED))
                 throw new RuntimeException("Red violation detected");
 
             if (left != null)
