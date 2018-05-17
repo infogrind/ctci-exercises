@@ -1,5 +1,13 @@
 public class FactZeros {
 
+    public static int factZerosFast(int n) {
+        int count = 0;
+        for (int i = 5; n / i > 0; i = i * 5)
+            count += n / i;
+
+        return count;
+    }
+
     public static int factZeros(int n) {
         TwosFives count = new TwosFives(0,0);
         for (int i = 2; i <= n; i++)
@@ -32,8 +40,10 @@ public class FactZeros {
 
     public static void main(String[] args) {
         
-        int[] numbers = {2, 3, 4, 5, 10, 20, 100, 1000, 10000};
-        for (int i: numbers)
+        int[] numbers = {2, 3, 4, 5, 10, 20, 100, 1000, 10000, 100000};
+        for (int i: numbers) {
             System.out.println(i + " -> " + factZeros(i) + " zeros");
+            System.out.println(i + " -> " + factZerosFast(i) + " zeros (fast)");
+        }
     }
 }
