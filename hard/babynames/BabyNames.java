@@ -12,9 +12,8 @@ public class BabyNames {
         for (String name: nameToFreq.keySet()) {
             String clazz = nameToClass.get(name);
             if (clazz == null)
-                throw new RuntimeException("No class found for name " + name);
-
-            if (result.containsKey(clazz))
+                result.put(name, nameToFreq.get(name));
+            else if (result.containsKey(clazz))
                 result.put(clazz, result.get(clazz) + nameToFreq.get(name));
             else
                 result.put(clazz, nameToFreq.get(name));
@@ -46,15 +45,23 @@ public class BabyNames {
 
     public static void main(String[] args) {
 
-        String[][] equivPairs = {{"Jon", "John"}, {"John", "Johnny"}, {"Chris", "Kris"},
-            {"Kris", "Christopher"}};
+        String[][] equivPairs = {
+            {"Jonathan", "John"},
+            {"Jon", "Johnny"},
+            {"Johnny", "John"},
+            {"Kari", "Carrie"},
+            {"Carleton", "Carlton"}};
 
         Map<String, Integer> nameFreqs = new HashMap<String, Integer>() {{
-            put("John", 15);
-            put("Jon", 12);
-            put("Chris", 13);
-            put("Kris", 4);
-            put("Christopher", 19);
+            put("John", 10);
+            put("Jon", 3);
+            put("Davis", 2);
+            put("Kari", 3);
+            put("Johnny", 11);
+            put("Carlton", 8);
+            put("Carleton", 2);
+            put("Jonathan", 9);
+            put("Carrie", 5);
         }};
 
         Map<String, Integer> classFreqs = babyNames(nameFreqs, equivPairs);
