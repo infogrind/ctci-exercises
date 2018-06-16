@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.ArrayList;
 
 public class Masseuse {
 
@@ -26,6 +27,28 @@ public class Masseuse {
         return bestOneBack;
     }
 
+    public static int longestSlotRec(int[] slots) {
+        return longestSlotRec(slots, new ArrayList<Integer>(), 0);
+    }
+
+    private static int longestSlotRec(int[] slots, ArrayList<Integer> memo,
+            int startSlot) {
+
+        if (startSlot >= slots.length)
+            return 0;
+        if (memo.size() > startSlot)
+            return memo.get(startSlot);
+
+        int without = longestSlotRec(slots, memo, startSlot + 1);
+        int with =
+            slots[startSlot] + longestSlotRec(slots, memo, startSlot + 2);
+
+        int best = Math.max(with, without);
+        if (memo.size() == startSlot)
+            memo.add(best);
+        return best;
+    }
+
     public static void main(String[] args) {
 
         int[][] slotset = {{30, 15, 60, 75, 45, 15, 15, 45},
@@ -34,6 +57,7 @@ public class Masseuse {
         for (int[] slots: slotset) {
             System.out.println("slots: " + Arrays.toString(slots));
             System.out.println("optimum: " + longestSlot(slots));
+            System.out.println("optimum rec: " + longestSlotRec(slots));
         }
     }
 }
