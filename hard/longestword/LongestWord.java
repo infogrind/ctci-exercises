@@ -48,19 +48,17 @@ public class LongestWord {
             if (dict.contains(substr)) {
                 boolean validRemainder = isComposedString(s, dict, memo, i);
                 if (validRemainder) {
-                    memo.put(startIdx, true);
                     return true; // short circuit
                 }
             }
         }
 
         if (dict.contains(s.substring(startIdx)) && startIdx > 0)
-            memo.put(startIdx, true);
-        else
+            return true;
+        else {
             memo.put(startIdx, false); // only whole word matches
-
-
-        return memo.get(startIdx);
+            return false;
+        }
     }
 
     public static void main(String[] args) {
