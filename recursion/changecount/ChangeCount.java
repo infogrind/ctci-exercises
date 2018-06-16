@@ -36,17 +36,23 @@ public class ChangeCount {
 
         int[][] counts = new int[n + 1][coins.length + 1];
 
+        /*
+         * Indices:
+         * i = amount
+         * j = index of max coin to use
+         */
+
         for (int i = 0; i <= n; i++) {
             for (int j = 0; j <= coins.length; j++) {
                 if (i == 0)
-                    counts[i][j] = 1;
+                    counts[i][j] = 1; // no money -> exactly one way
                 else if (j == 0)
-                    counts[i][j] = 0;
+                    counts[i][j] = 0; // no coins -> no way (unless no money)
                 else {
                     int count = 0;
-                    if (i >= coins[j-1])
+                    if (i >= coins[j-1]) // we can use the biggest coin only if the amount is at least as big
                         count += counts[i - coins[j - 1]][j];
-                    count += counts[i][j-1];
+                    count += counts[i][j-1]; // not using the biggest coin
 
                     counts[i][j] = count;
                 }
