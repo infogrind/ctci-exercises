@@ -37,6 +37,10 @@ public class Mergesort {
             i++;
         }
 
+        while (right < until) {
+            temp[i++] = array[right++];
+        }
+
         for (i = 0; i < temp.length; i++)
             array[from + i] = temp[i];
     }
